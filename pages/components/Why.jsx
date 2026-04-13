@@ -147,7 +147,7 @@ const Why = () => {
                   Always Evolving
                   </h3>
                   <p className="text-neutral-400 text-sm text-center md:text-left">
-                  Tech moves fast. Whether it's React Native for mobile or AI-driven tools, I stay curious and adapt quickly, bringing modern solutions to every project.
+                  Tech moves fast. Whether it&apos;s React Native for mobile or AI-driven tools, I stay curious and adapt quickly, bringing modern solutions to every project.
                   </p>
                 </div>
               </div>
