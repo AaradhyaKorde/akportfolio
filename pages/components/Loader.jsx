@@ -13,7 +13,7 @@ const words = [
   "नमस्ते",
   "Olá",
   "नमस्कार",
-  "Aaradhya Korde, Full-Stack Developer",
+  "Meow Meow",
 ];
 
 export const opacity = {
