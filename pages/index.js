@@ -10,6 +10,7 @@ import Othersec from "./components/Othersec";
 import Footer from "./components/Footer";
 import Why from "./components/Why";
 import SkillsTech from "./components/SkillsTech";
+import ProjectsSection from "./components/ProjectsSection";
 import Mobiletest from "./components/Mobiletest";
 import Loader from "./components/Loader";
 const Index = () => {
@@ -30,6 +31,7 @@ const Index = () => {
       {/* <Banner2 /> */}
       <div id="SkillsTech"> <SkillsTech /></div>
       <div id="WorkExperience"> <WorkExperience /></div>
+      <div id="Projects"> <ProjectsSection /></div>
       {/* <Othersec /> */}
       <div id="Text1" className="hidden sm:block"> <Text1 /></div>
  
