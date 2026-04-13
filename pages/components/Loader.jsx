@@ -13,7 +13,7 @@ const words = [
   "नमस्ते",
   "Olá",
   "नमस्कार",
-  "Welcome to NoxAlgo",
+  "Aaradhya Korde, Full-Stack Developer",
 ];
 
 export const opacity = {

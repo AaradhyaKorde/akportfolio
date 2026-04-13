@@ -31,7 +31,8 @@ const Index = () => {
       <div id="SkillsTech"> <SkillsTech /></div>
       <div id="WorkExperience"> <WorkExperience /></div>
       {/* <Othersec /> */}
-      <div id="Text1"> <Text1 /></div>
+      <div id="Text1" className="hidden sm:block"> <Text1 /></div>
+ 
       <Mobiletest />
       <Footer />
     </>
