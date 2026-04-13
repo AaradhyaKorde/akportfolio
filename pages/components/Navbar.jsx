@@ -98,6 +98,11 @@ const Navbar = () => {
                   Skills & Tech
                 </a>
               </Link>
+              <Link href="#Projects" legacyBehavior>
+                <a className="text-[#FFFFF0] flex items-center text-[14px] xl:text-[14px] hover:text-red-200 relative after:absolute after:bottom-[-15px] after:left-0 after:h-[4px] after:w-0 after:bg-[#FFFFF0] after:transition-all after:duration-300 hover:after:w-full focus:outline-none">
+                  Projects
+                </a>
+              </Link>
             </div>
           </div>
           <div className="hidden lg:flex items-center pr-8">
@@ -178,6 +183,14 @@ const Navbar = () => {
                 className="block py-3 text-[#FFFFF0] text-base font-medium hover:text-red-200 focus:outline-none focus:text-red-200 transition-colors"
               >
                 Skills & Tech
+              </a>
+            </Link>
+            <Link href="#Projects" legacyBehavior>
+              <a
+                onClick={handleMobileNavClick}
+                className="block py-3 text-[#FFFFF0] text-base font-medium hover:text-red-200 focus:outline-none focus:text-red-200 transition-colors"
+              >
+                Projects
               </a>
             </Link>
             {/* Mobile CTA Button */}

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useState } from "react";
 
 // Project data as before
 const projects = [
@@ -26,7 +26,7 @@ const projects = [
     category: "Logistics Platform",
     title: "Project-44",
     description:
-      "Built a real-time dashboard, fast data tables, and seamless payment integration for high-volume logistics workflows.",
+      "Built a real-time dashboard and fast data tables for high-volume logistics workflows.",
     tags: [
       "React.js",
       "Redux",
@@ -84,26 +84,114 @@ const ProjectsSection = () => {
   // For seamless infinite loop, duplicate projects
   const displayProjects = [...projects, ...projects];
 
+  // Swipe State & Handlers
+  const sliderRef = useRef(null);
+  const [isSwiping, setIsSwiping] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [translateX, setTranslateX] = useState(0); // user-initiated
+  const [lastTranslateX, setLastTranslateX] = useState(0);
+
+  // Disable slider animation during swipe
+  const [disableAnim, setDisableAnim] = useState(false);
+
+  // Touch and Mouse support
+  const handleStart = (e) => {
+    setIsSwiping(true);
+    setDisableAnim(true);
+    if (e.touches && e.touches.length) {
+      setStartX(e.touches[0].clientX);
+    } else {
+      setStartX(e.clientX);
+    }
+    setLastTranslateX(translateX);
+  };
+
+  const handleMove = (e) => {
+    if (!isSwiping) return;
+    let clientX;
+    if (e.touches && e.touches.length) {
+      clientX = e.touches[0].clientX;
+    } else {
+      clientX = e.clientX;
+    }
+    let deltaX = clientX - startX;
+    let newTranslate = lastTranslateX + deltaX;
+
+    // Virtual loop: snap to loop if going beyond half
+    const sliderWidth = sliderRef.current
+      ? sliderRef.current.offsetWidth / 2
+      : 0;
+    if (sliderWidth) {
+      // Forward swipe (left)
+      if (newTranslate < -sliderWidth) {
+        newTranslate = newTranslate + sliderWidth;
+        setStartX(clientX); // snap touch reference to avoid jump
+        setLastTranslateX(newTranslate);
+      }
+      // Backward swipe (right)
+      if (newTranslate > 0) {
+        newTranslate = newTranslate - sliderWidth;
+        setStartX(clientX);
+        setLastTranslateX(newTranslate);
+      }
+    }
+
+    setTranslateX(newTranslate);
+  };
+
+  const handleEnd = () => {
+    setIsSwiping(false);
+    setDisableAnim(false);
+    // Optionally, you can snap to card positions here
+  };
+
+  // Prevent scrolling when swiping horizontally on mobile
+  const preventScroll = (e) => {
+    if (isSwiping) e.preventDefault();
+  };
+
   return (
-    <section className="relative bg-[#101314] py-16 md:py-24 overflow-hidden">
+    <section className="relative w-screen left-1/2 right-1/2 -mx-[50vw] bg-[#101314] py-16 md:py-24 overflow-hidden">
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute left-8 top-10 h-56 w-56 rounded-full bg-[#fffff0]/5 blur-3xl" />
         <div className="absolute right-10 bottom-16 h-56 w-56 rounded-full bg-[#6a3c3c]/10 blur-3xl" />
       </div>
-      <div className="relative max-w-7xl mx-auto px-4 md:px-8">
+      <div className="relative w-full px-4 md:px-8 mx-auto">
         <div className="mb-10 md:mb-14">
           <div className="w-[100px] md:w-[150px] h-[3px] bg-[#fffff0] mb-3 md:mb-5" />
           <h2 className="text-3xl md:text-5xl uppercase font-semibold bg-gradient-to-r from-[#fffff0] to-[#afa18f] bg-clip-text text-transparent">
             Projects
           </h2>
         </div>
-        {/* Slow, seamless, never-pausing continuous slider */}
-        <div className="relative w-full overflow-x-hidden">
+        {/* Slow, seamless, never-pausing continuous slider with swipe support */}
+        <div
+          className="relative w-full overflow-x-hidden"
+          onTouchStart={handleStart}
+          onTouchMove={handleMove}
+          onTouchEnd={handleEnd}
+          onMouseDown={handleStart}
+          onMouseMove={(e) => {
+            if (isSwiping) handleMove(e);
+          }}
+          onMouseUp={handleEnd}
+          onMouseLeave={handleEnd}
+          onDragStart={(e) => e.preventDefault()}
+          onScroll={preventScroll}
+          style={{ cursor: isSwiping ? "grabbing" : "grab", userSelect: "none" }}
+        >
           <div
-            className="flex"
+            ref={sliderRef}
+            className="flex select-none"
             style={{
               width: "200%",
-              animation: `slideProjects ${SLIDE_DURATION}s linear infinite`,
+              animation: !disableAnim
+                ? `slideProjects ${SLIDE_DURATION}s linear infinite`
+                : "none",
+              transform: disableAnim
+                ? `translateX(${translateX}px)`
+                : undefined,
+              transition: !disableAnim ? undefined : "none",
+              touchAction: "pan-y",
             }}
           >
             {displayProjects.map((project, idx) => (
